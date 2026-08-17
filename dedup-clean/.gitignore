@@ -1,5 +1,7 @@
 __pycache__/
-*.pycod
+*.pyc
+*.pyo
+*.pyd
 .idea/
 .vscode/
-.DS_Stor
+.DS_Store

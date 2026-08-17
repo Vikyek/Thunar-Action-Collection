@@ -1,3 +1,9 @@
 [submodule "Thunar-Paste-Dereference"]
 	path = Thunar-Paste-Dereference
 	url = https://github.com/Vikyek/Thunar-Paste-Dereference.git
+[submodule "Thunar-Webp-Optimizer"]
+	path = Thunar-Webp-Optimizer
+	url = https://github.com/Vikyek/Thunar-Webp-Optimizer.git
+[submodule "Thunar-Symlink-Translator"]
+	path = Thunar-Symlink-Translator
+	url = https://github.com/Vikyek/Thunar-Symlink-Translator.git

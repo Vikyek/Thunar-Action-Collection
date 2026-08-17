@@ -1,1 +1,1 @@
-from .core import SegregatorEngine, DEF
+from .core import SegregatorEngine, DEFAULT_CONFIG

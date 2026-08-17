@@ -1,1 +1,1 @@
-from .core import Placehol
+from .core import PlaceholderResolver

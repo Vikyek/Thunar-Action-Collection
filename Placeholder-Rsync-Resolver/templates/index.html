@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placeholder Rsync Resolver</title>
+    <meta name="description" content="Resolve 0b placeholder files with actual content from local or remote sources via rsync.">
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="ambient-glow"></div>
+    
+    <div class="app-wrapper">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="logo-group">
+                <span class="logo-badge">⚡</span>
+                <div class="logo-meta">
+                    <h1>Placeholder Resolver</h1>
+                    <p>File Transfer & Rsync Sync Utility</p>
+                </div>
+            </div>
+            <span class="version-badge">v1.0.0</span>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="main-grid">
+            
+            <!-- Left Config Pane -->
+            <div class="side-panel">
+                <!-- Directory Configuration -->
+                <section class="card config-card">
+                    <h2>Directory Config</h2>
+                    <p class="card-desc">Specify paths for files, synchronization source, and destination.</p>
+                    
+                    <div class="form-group">
+                        <label for="src-input">Placeholder Source Directory</label>
+                        <input type="text" id="src-input" value="{{ default_dir }}" placeholder="E.g., /path/to/placeholders">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="actual-input">Actual Content Source (Local or Remote)</label>
+                        <input type="text" id="actual-input" placeholder="E.g., /mnt/sync/ or user@host:/var/sync">
+                        <span class="field-note">Supports local paths or remote SSH paths compatible with rsync.</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dest-input">Destination Directory</label>
+                        <input type="text" id="dest-input" placeholder="E.g., /path/to/destination">
+                    </div>
+                </section>
+                
+                <!-- Options Panel -->
+                <section class="card options-card">
+                    <h2>Operation Rules</h2>
+                    
+                    <div class="radio-group">
+                        <label class="radio-label">Action Mode:</label>
+                        <div class="radio-options">
+                            <label class="radio-container">
+                                <input type="radio" name="action-mode" value="copy" checked>
+                                <span class="radio-checkmark"></span>
+                                <span class="lbl-text">Copy (Safe)</span>
+                            </label>
+                            <label class="radio-container">
+                                <input type="radio" name="action-mode" value="move">
+                                <span class="radio-checkmark"></span>
+                                <span class="lbl-text">Move (Clean)</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <label class="check-container">
+                            <input type="checkbox" id="check-force-all">
+                            <span class="check-checkmark"></span>
+                            <span class="lbl-text">Force sync all files (ignore local size)</span>
+                        </label>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button type="button" id="btn-scan" class="btn btn-secondary">Scan Folder</button>
+                        <button type="button" id="btn-resolve" class="btn btn-primary" disabled>Resolve Placeholders</button>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- Right Logs & Files Pane -->
+            <div class="content-panel">
+                <!-- Scanned Items Tree -->
+                <section class="card list-card">
+                    <div class="list-header">
+                        <h2>Scanned Items to Process</h2>
+                        <span id="items-counter" class="counter">0 files found</span>
+                    </div>
+                    
+                    <div class="tree-container empty" id="tree-container">
+                        <div class="empty-state">
+                            <span class="empty-icon">📁</span>
+                            <h3>No files scanned yet</h3>
+                            <p>Configure paths on the left and click "Scan Folder" to display identified files.</p>
+                        </div>
+                        
+                        <div class="scan-lists" style="display: none;">
+                            <div class="list-section" id="section-placeholders">
+                                <h3>Placeholders to Fetch via Rsync</h3>
+                                <ul class="path-list" id="list-placeholders"></ul>
+                            </div>
+                            <div class="list-section" id="section-full">
+                                <h3>Local Full Files to Copy Directly</h3>
+                                <ul class="path-list" id="list-full"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Rsync Terminal Output -->
+                <section class="card console-card">
+                    <div class="console-header">
+                        <h2>Rsync Live Terminal Logs</h2>
+                        <button type="button" id="btn-clear-logs" class="btn-text">Clear Logs</button>
+                    </div>
+                    <div class="console-body" id="console-logs">
+                        <div class="console-placeholder">Waiting for process start...</div>
+                    </div>
+                </section>
+            </div>
+            
+        </main>
+        
+        <!-- Status Bar -->
+        <footer class="main-footer">
+            <span id="status-bar" class="status-bar">Ready</span>
+        </footer>
+    </div>
+
+    <!-- Confirm Modal -->
+    <div class="modal-overlay" id="confirm-modal" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Confirm Execution</h3>
+                <button type="button" class="btn-close-modal" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to proceed with the <strong id="confirm-action-name" style="text-transform: uppercase;">copy</strong> operation?</p>
+                <div class="modal-stats">
+                    <div class="modal-stat">
+                        <span id="modal-count-placeholders" class="stat-num">0</span>
+                        <span class="stat-lbl">Placeholders (Rsync)</span>
+                    </div>
+                    <div class="modal-stat">
+                        <span id="modal-count-full" class="stat-num">0</span>
+                        <span class="stat-lbl">Full Files (Local Copy)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btn-modal-cancel">Cancel</button>
+                <button type="button" class="btn btn-danger" id="btn-modal-confirm">Confirm & Resolve</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

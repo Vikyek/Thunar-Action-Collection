@@ -7,7 +7,7 @@ This repository acts as a central index and grouping for custom Thunar action sc
 The collection consists of the following tools:
 
 ### 1. [Thunar-Paste-Dereference](https://github.com/Vikyek/Thunar-Paste-Dereference)
-*   **Description:** Pastes copied files/folders from clipboard but dereferences symbolic links, copying the actual targets.
+*   **Description:** Pastes copied files/folders from clipboard but dereferences symbolic links, copying the actual targets. Supports both Wayland (`wl-paste`) and X11 (`xclip`).
 *   **Thunar Command:** `python3 /home/v/Projects/Thunar-Action/Thunar-Paste-Dereference/cli.py %f`
 
 ### 2. [Windows-Segregation](https://github.com/Vikyek/Windows-Segregation)
@@ -21,6 +21,18 @@ The collection consists of the following tools:
 ### 4. [dedup-clean](https://github.com/Vikyek/dedup-clean)
 *   **Description:** Deduplicates files by hash (keeping the oldest version) and cleans up empty files.
 *   **Thunar Command:** `/home/v/.local/bin/dedup-clean %F`
+
+### 5. [Thunar-Webp-Optimizer](https://github.com/Vikyek/Thunar-Webp-Optimizer)
+*   **Description:** Converts selected images to the modern WebP format, supporting compression control.
+*   **Thunar Command:** `python3 /home/v/Projects/Thunar-Action/Thunar-Webp-Optimizer/cli.py %F`
+
+### 6. [Thunar-Symlink-Translator](https://github.com/Vikyek/Thunar-Symlink-Translator)
+*   **Description:** Translates absolute symlinks in selected folders/files to relative ones to keep them portable across machines.
+*   **Thunar Command:** `python3 /home/v/Projects/Thunar-Action/Thunar-Symlink-Translator/cli.py %F`
+
+### 7. Edit as Administrator (sudoedit)
+*   **Description:** Securely edits text files with root privileges using your default `$EDITOR` via standard `sudoedit`.
+*   **Thunar Command:** `exo-open --launch TerminalEmulator sudoedit %f`
 
 ## uca.xml Configuration reference
 
@@ -70,6 +82,44 @@ These actions are registered in your Thunar configuration (`~/.config/Thunar/uca
     <description>Paste copied files but replace links with their target files/directories</description>
     <patterns>*</patterns>
     <directories/>
+  </action>
+  
+  <!-- Convert to WebP -->
+  <action>
+    <icon>image-x-generic</icon>
+    <name>Convert to WebP</name>
+    <unique-id>1779351144290246-7</unique-id>
+    <command>python3 /home/v/Projects/Thunar-Action/Thunar-Webp-Optimizer/cli.py %F</command>
+    <description>Convert selected images to WebP format</description>
+    <patterns>*</patterns>
+    <image-files/>
+  </action>
+  
+  <!-- Translate Symlinks -->
+  <action>
+    <icon>emblem-symbolic-link</icon>
+    <name>Translate Symlinks to Relative</name>
+    <unique-id>1779351144290246-8</unique-id>
+    <command>python3 /home/v/Projects/Thunar-Action/Thunar-Symlink-Translator/cli.py %F</command>
+    <description>Convert absolute symbolic links to portable relative ones</description>
+    <patterns>*</patterns>
+    <directories/>
+    <audio-files/>
+    <image-files/>
+    <other-files/>
+    <text-files/>
+    <video-files/>
+  </action>
+  
+  <!-- Edit as Root (sudoedit) -->
+  <action>
+    <icon>accessories-text-editor</icon>
+    <name>Edit as Administrator (sudoedit)</name>
+    <unique-id>1779351144290246-9</unique-id>
+    <command>exo-open --launch TerminalEmulator sudoedit %f</command>
+    <description>Edit the selected text file with root privileges using sudoedit</description>
+    <patterns>*</patterns>
+    <text-files/>
   </action>
 </actions>
 ```

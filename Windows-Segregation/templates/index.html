@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows-Segregation Dashboard</title>
+    <meta name="description" content="An elegant and modern local utility to scan folders and segregate Windows-specific files and directories.">
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="glow-bg"></div>
+    
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="logo-icon">🪟</span>
+                <div class="logo-text">
+                    <h1>Windows Segregator</h1>
+                    <p class="tagline">Local File System Organizer</p>
+                </div>
+            </div>
+            <div class="badge">v1.0.0</div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            <!-- Control Panel Card -->
+            <section class="card control-card" id="control-panel">
+                <h2>Configure Scan</h2>
+                <p class="section-desc">Select the folder you want to clean up and configure detection rules.</p>
+                
+                <div class="form-group">
+                    <label for="dir-input">Directory Path</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="dir-input" value="{{ default_dir }}" placeholder="E.g., /path/to/folder" aria-label="Directory Path">
+                        <button type="button" id="btn-current-dir" class="btn btn-secondary" title="Reset to default directory">Reset</button>
+                    </div>
+                </div>
+
+                <div class="options-group">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="check-binaries">
+                        <span class="checkmark"></span>
+                        <span class="label-text">Include Compiled Windows Binaries (.exe, .dll)</span>
+                    </label>
+                </div>
+
+                <div class="actions">
+                    <button type="button" id="btn-scan" class="btn btn-primary">Scan Directory</button>
+                    <button type="button" id="btn-segregate" class="btn btn-danger" disabled>Segregate Items</button>
+                </div>
+            </section>
+
+            <!-- Results Panel Card -->
+            <section class="card results-card" id="results-panel">
+                <div class="results-header">
+                    <h2>Scan Results</h2>
+                    <span id="results-counter" class="counter">0 items found</span>
+                </div>
+                
+                <div class="results-container empty" id="results-container">
+                    <div class="empty-state">
+                        <span class="empty-icon">📂</span>
+                        <h3>No scan run yet</h3>
+                        <p>Enter a folder path and click "Scan Directory" above to review Windows-specific files and folders.</p>
+                    </div>
+                    
+                    <div class="results-list" style="display: none;">
+                        <!-- Directories Section -->
+                        <div class="results-section" id="section-dirs">
+                            <h3>Directories to Move</h3>
+                            <ul class="file-tree" id="list-dirs"></ul>
+                        </div>
+                        
+                        <!-- Files Section -->
+                        <div class="results-section" id="section-files">
+                            <h3>Files to Move</h3>
+                            <ul class="file-tree" id="list-files"></ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Status & Toast Notifications -->
+        <footer class="app-footer">
+            <div id="status-bar" class="status-bar">Ready</div>
+        </footer>
+    </div>
+
+    <!-- Modal Dialog -->
+    <div class="modal-backdrop" id="confirm-modal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Confirm Segregation</h3>
+                <button type="button" class="btn-close-modal" id="modal-close-x">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to move all identified Windows-specific items into a new <strong>Windows/</strong> directory within the target path?</p>
+                <div class="stats-overview">
+                    <div class="stat-box">
+                        <span id="modal-count-dirs" class="stat-val">0</span>
+                        <span class="stat-lbl">Directories</span>
+                    </div>
+                    <div class="stat-box">
+                        <span id="modal-count-files" class="stat-val">0</span>
+                        <span class="stat-lbl">Files</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btn-modal-cancel">Cancel</button>
+                <button type="button" class="btn btn-danger" id="btn-modal-confirm">Proceed & Move</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
