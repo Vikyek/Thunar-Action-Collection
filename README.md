@@ -44,41 +44,48 @@ chmod +x install.sh
 
 ---
 
-## 🛠️ Collection Overview
+## 💻 Usage & Actions Overview
 
-The collection consists of the following tools:
+Once installed and configured in `~/.config/Thunar/uca.xml`, right-click on any file, folder, or empty background in Thunar to access these actions:
 
 ### 1. [Thunar-Paste-Dereference](https://github.com/Vikyek/Thunar-Paste-Dereference)
 * **Description:** Pastes copied files/folders from clipboard but dereferences symbolic links, copying the actual targets. Supports both Wayland (`wl-paste`) and X11 (`xclip`).
-* **Thunar Command:** `thunar-paste-deref %f` or `python3 /path/to/Thunar-Paste-Dereference/cli.py %f`
+* **Usage:** Copy symlinks, navigate to destination, right-click background ➔ **Paste (Dereference Links)**.
+* **Command:** `thunar-paste-deref %f`
 
 ### 2. [Windows-Segregation](https://github.com/Vikyek/Windows-Segregation)
 * **Description:** Scans and moves Windows-only system files or directories to a dedicated Windows folder to clean up Linux workspaces.
-* **Thunar Command:** `windows-segregation --notify %F` or `python3 /path/to/Windows-Segregation/cli.py --notify %F`
+* **Usage:** Right-click directory ➔ **Segregate Windows Files**.
+* **Command:** `windows-segregation --notify %F`
 
 ### 3. [Placeholder-Rsync-Resolver](https://github.com/Vikyek/Placeholder-Rsync-Resolver)
 * **Description:** Resolves 0-byte placeholder files by downloading their actual content from a remote server using Rsync.
-* **Thunar Command:** `placeholder-rsync-resolver --src %f --notify` or `python3 /path/to/Placeholder-Rsync-Resolver/cli.py --src %f --notify`
+* **Usage:** Right-click folder with placeholders ➔ **Resolve Placeholders (Rsync)**.
+* **Command:** `placeholder-rsync-resolver --src %f --notify`
 
 ### 4. [dedup-clean](https://github.com/Vikyek/dedup-clean)
 * **Description:** Deduplicates files by hash (keeping the oldest version) and cleans up empty files.
-* **Thunar Command:** `dedup-clean %F`
+* **Usage:** Right-click folder ➔ **Deduplicate & Clean Empty Files**.
+* **Command:** `dedup-clean %F`
 
 ### 5. [Thunar-Webp-Optimizer](https://github.com/Vikyek/Thunar-Webp-Optimizer)
 * **Description:** Converts selected images to the modern WebP format, supporting compression control.
-* **Thunar Command:** `thunar-webp-optimizer %F` or `python3 /path/to/Thunar-Webp-Optimizer/cli.py %F`
+* **Usage:** Select images, right-click ➔ **Convert to WebP**.
+* **Command:** `thunar-webp-optimizer %F`
 
 ### 6. [Thunar-Symlink-Translator](https://github.com/Vikyek/Thunar-Symlink-Translator)
 * **Description:** Translates absolute symlinks in selected folders/files to relative ones to keep them portable across machines.
-* **Thunar Command:** `thunar-symlink-translator %F` or `python3 /path/to/Thunar-Symlink-Translator/cli.py %F`
+* **Usage:** Select folder/links, right-click ➔ **Translate Symlinks to Relative**.
+* **Command:** `thunar-symlink-translator %F`
 
 ### 7. Edit as Administrator (sudoedit)
 * **Description:** Securely edits text files with root privileges using your default `$EDITOR` via standard `sudoedit`.
-* **Thunar Command:** `exo-open --launch TerminalEmulator sudoedit %f`
+* **Usage:** Right-click text file ➔ **Edit as Administrator (sudoedit)**.
+* **Command:** `exo-open --launch TerminalEmulator sudoedit %f`
 
 ---
 
-## 💻 uca.xml Configuration Reference
+## ⚙️ uca.xml Configuration Reference
 
 These actions are registered in your Thunar configuration (`~/.config/Thunar/uca.xml`). Below is the XML configuration matching this setup:
 
