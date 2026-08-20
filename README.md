@@ -1,40 +1,84 @@
 # Thunar Custom Actions Collection
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 This repository acts as a central index and grouping for custom Thunar action scripts and utilities designed to enhance the Thunar File Manager on Linux.
 
-## Collection Overview
+---
+
+## 📋 Requirements & Dependencies
+
+- **File Manager:** `thunar` (XFCE / Linux desktop file manager)
+- **Core Runtime:** `python3` (3.8+)
+- **System Utilities:**
+  - `wl-clipboard` (Wayland clipboard support) or `xclip` (X11 clipboard support)
+  - `libnotify` (`notify-send` for desktop alerts)
+  - `rsync` (for placeholder synchronization)
+  - `exo-utils` (`exo-open` for sudoedit terminal launcher)
+- **Optional Python Libraries:**
+  - `python-pillow` (for WebP image conversion)
+  - `python-flask` (for Web interfaces in dedup/segregator/resolver)
+  - `tk` / `python-tkinter` (for desktop GUI interfaces)
+
+Install on Arch Linux:
+```bash
+sudo pacman -S thunar python rsync libnotify wl-clipboard xclip python-pillow python-flask tk
+```
+
+---
+
+## 🚀 Installation & Setup
+
+### Automated Installation
+Run the master installer to initialize all submodules and register local CLI wrappers in `~/.local/bin`:
+```bash
+git clone --recurse-submodules https://github.com/Vikyek/Thunar-Action-Collection.git
+cd Thunar-Action-Collection
+chmod +x install.sh
+./install.sh
+```
+
+### Manual Installation & uca.xml Setup
+1. Clone the repository and install dependencies.
+2. Merge the action configurations below into your Thunar configuration file at `~/.config/Thunar/uca.xml` (or configure each action via Thunar's GUI: **Edit** ➔ **Configure custom actions...**).
+
+---
+
+## 🛠️ Collection Overview
 
 The collection consists of the following tools:
 
 ### 1. [Thunar-Paste-Dereference](https://github.com/Vikyek/Thunar-Paste-Dereference)
-*   **Description:** Pastes copied files/folders from clipboard but dereferences symbolic links, copying the actual targets. Supports both Wayland (`wl-paste`) and X11 (`xclip`).
-*   **Thunar Command:** `python3 /home/v/Projects/Thunar-Action/Thunar-Paste-Dereference/cli.py %f`
+* **Description:** Pastes copied files/folders from clipboard but dereferences symbolic links, copying the actual targets. Supports both Wayland (`wl-paste`) and X11 (`xclip`).
+* **Thunar Command:** `thunar-paste-deref %f` or `python3 /path/to/Thunar-Paste-Dereference/cli.py %f`
 
 ### 2. [Windows-Segregation](https://github.com/Vikyek/Windows-Segregation)
-*   **Description:** Scans and moves Windows-only system files or directories to a dedicated Windows folder to clean up Linux workspaces.
-*   **Thunar Command:** `python3 /home/v/Projects/Thunar-Action/Windows-Segregation/cli.py --notify %F`
+* **Description:** Scans and moves Windows-only system files or directories to a dedicated Windows folder to clean up Linux workspaces.
+* **Thunar Command:** `windows-segregation --notify %F` or `python3 /path/to/Windows-Segregation/cli.py --notify %F`
 
 ### 3. [Placeholder-Rsync-Resolver](https://github.com/Vikyek/Placeholder-Rsync-Resolver)
-*   **Description:** Resolves 0-byte placeholder files by downloading their actual content from a remote server using Rsync.
-*   **Thunar Command:** `python3 /home/v/Projects/Thunar-Action/Placeholder-Rsync-Resolver/cli.py --src %f --notify`
+* **Description:** Resolves 0-byte placeholder files by downloading their actual content from a remote server using Rsync.
+* **Thunar Command:** `placeholder-rsync-resolver --src %f --notify` or `python3 /path/to/Placeholder-Rsync-Resolver/cli.py --src %f --notify`
 
 ### 4. [dedup-clean](https://github.com/Vikyek/dedup-clean)
-*   **Description:** Deduplicates files by hash (keeping the oldest version) and cleans up empty files.
-*   **Thunar Command:** `/home/v/.local/bin/dedup-clean %F`
+* **Description:** Deduplicates files by hash (keeping the oldest version) and cleans up empty files.
+* **Thunar Command:** `dedup-clean %F`
 
 ### 5. [Thunar-Webp-Optimizer](https://github.com/Vikyek/Thunar-Webp-Optimizer)
-*   **Description:** Converts selected images to the modern WebP format, supporting compression control.
-*   **Thunar Command:** `python3 /home/v/Projects/Thunar-Action/Thunar-Webp-Optimizer/cli.py %F`
+* **Description:** Converts selected images to the modern WebP format, supporting compression control.
+* **Thunar Command:** `thunar-webp-optimizer %F` or `python3 /path/to/Thunar-Webp-Optimizer/cli.py %F`
 
 ### 6. [Thunar-Symlink-Translator](https://github.com/Vikyek/Thunar-Symlink-Translator)
-*   **Description:** Translates absolute symlinks in selected folders/files to relative ones to keep them portable across machines.
-*   **Thunar Command:** `python3 /home/v/Projects/Thunar-Action/Thunar-Symlink-Translator/cli.py %F`
+* **Description:** Translates absolute symlinks in selected folders/files to relative ones to keep them portable across machines.
+* **Thunar Command:** `thunar-symlink-translator %F` or `python3 /path/to/Thunar-Symlink-Translator/cli.py %F`
 
 ### 7. Edit as Administrator (sudoedit)
-*   **Description:** Securely edits text files with root privileges using your default `$EDITOR` via standard `sudoedit`.
-*   **Thunar Command:** `exo-open --launch TerminalEmulator sudoedit %f`
+* **Description:** Securely edits text files with root privileges using your default `$EDITOR` via standard `sudoedit`.
+* **Thunar Command:** `exo-open --launch TerminalEmulator sudoedit %f`
 
-## uca.xml Configuration reference
+---
+
+## 💻 uca.xml Configuration Reference
 
 These actions are registered in your Thunar configuration (`~/.config/Thunar/uca.xml`). Below is the XML configuration matching this setup:
 
@@ -123,3 +167,8 @@ These actions are registered in your Thunar configuration (`~/.config/Thunar/uca
   </action>
 </actions>
 ```
+
+---
+
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
