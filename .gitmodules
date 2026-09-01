@@ -7,3 +7,12 @@
 [submodule "Thunar-Symlink-Translator"]
 	path = Thunar-Symlink-Translator
 	url = https://github.com/Vikyek/Thunar-Symlink-Translator.git
+[submodule "dedup-clean"]
+	path = dedup-clean
+	url = https://github.com/Vikyek/dedup-clean.git
+[submodule "Placeholder-Rsync-Resolver"]
+	path = Placeholder-Rsync-Resolver
+	url = https://github.com/Vikyek/Placeholder-Rsync-Resolver.git
+[submodule "Windows-Segregation"]
+	path = Windows-Segregation
+	url = https://github.com/Vikyek/Windows-Segregation.git
