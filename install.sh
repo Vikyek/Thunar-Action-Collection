@@ -28,5 +28,25 @@ for sub in dedup-clean Placeholder-Rsync-Resolver Thunar-Paste-Dereference Thuna
     fi
 done
 
+# Create CLI wrappers for direct python scripts
+cat << 'EOF' > "${BIN_DIR}/thunar-paste-deref"
+#!/usr/bin/env bash
+exec python3 "${HOME}/Projects/Thunar-Action-Collection/Thunar-Paste-Dereference/cli.py" "$@"
+EOF
+chmod +x "${BIN_DIR}/thunar-paste-deref"
+
+cat << 'EOF' > "${BIN_DIR}/thunar-webp-optimizer"
+#!/usr/bin/env bash
+exec python3 "${HOME}/Projects/Thunar-Action-Collection/Thunar-Webp-Optimizer/cli.py" "$@"
+EOF
+chmod +x "${BIN_DIR}/thunar-webp-optimizer"
+
+cat << 'EOF' > "${BIN_DIR}/thunar-symlink-translator"
+#!/usr/bin/env bash
+exec python3 "${HOME}/Projects/Thunar-Action-Collection/Thunar-Symlink-Translator/cli.py" "$@"
+EOF
+chmod +x "${BIN_DIR}/thunar-symlink-translator"
+
 echo "Thunar Action Collection installation complete!"
 echo "Refer to README.md for uca.xml Thunar custom action registration."
+
